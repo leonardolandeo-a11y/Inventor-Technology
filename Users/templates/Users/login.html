@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Acceso Seguro | TechCode{% endblock %}
+
+{% block content %}
+<div class="login-container-wrapper">
+    
+    <div class="login-card-glass">
+        <div class="login-header">
+            <div class="login-icon-circle">
+                <i class="fas fa-fingerprint"></i>
+            </div>
+            <h2>Bienvenido</h2>
+            <p>Ingresa tus credenciales para acceder al sistema.</p>
+        </div>
+
+        {% if form.non_field_errors %}
+            <div class="error-banner">
+                <i class="fas fa-exclamation-triangle"></i> 
+                {{ form.non_field_errors|striptags }}
+            </div>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+
+            {% for field in form %}
+                <div class="form-group custom-input">
+                    <label class="form-label" for="{{ field.id_for_label }}">
+                        {% if 'username' in field.name %}
+                            <i class="fas fa-user-astronaut"></i>
+                        {% elif 'password' in field.name %}
+                            <i class="fas fa-key"></i>
+                        {% endif %}
+                        {{ field.label }}
+                    </label>
+
+                    {{ field }}
+
+                    {% if field.errors %}
+                        <div class="field-error">
+                            {{ field.errors|striptags }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="btn-submit btn-full-width">
+                INGRESAR <i class="fas fa-arrow-right"></i>
+            </button>
+            
+        </form>
+
+        
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,736 @@
+/* === VARIABLES (Paleta Dark/Purple Aesthetic) === */
+:root {
+    /* Fondo: Gradiente oscuro */
+    --bg-gradient-start: #1a0b2e; /* Morado muy oscuro */
+    --bg-gradient-end: #000000;   /* Negro puro */
+    
+    /* Sidebar: Un tono sólido pero suave */
+    --sidebar-bg: #110d16;        /* Casi negro con tinte morado */
+    
+    /* Acentos */
+    --accent-color: #d946ef;      /* Fucsia/Morado Neón (Reemplaza al rojo) */
+    --accent-secondary: #8b5cf6;  /* Violeta suave */
+    --success-green: #10b981;     /* Verde esmeralda */
+    
+    /* Textos */
+    --text-main: #ffffff;
+    --text-muted: #a1a1aa;
+    
+    /* Tarjetas (Glassmorphism Dark) */
+    --card-bg: #1f1b29;           /* Gris/Morado oscuro */
+    --card-border: #3f3b4d;       /* Borde sutil */
+}
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif; /* Tipografía Nueva */
+    background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+    background-attachment: fixed; /* El fondo no se mueve al scrollear */
+    color: var(--text-main);
+    min-height: 100vh;
+}
+
+/* === LAYOUT PRINCIPAL === */
+.app-container {
+    display: flex;
+    min-height: 100vh;
+    backdrop-filter: blur(10px); /* Efecto sutil */
+}
+
+/* === SIDEBAR (Izquierda) === */
+.sidebar {
+    width: 260px;
+    background-color: var(--sidebar-bg);
+    border-right: 1px solid rgba(255,255,255,0.05); /* Línea divisoria sutil */
+    color: var(--text-main);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    box-shadow: 5px 0 15px rgba(0,0,0,0.3);
+    z-index: 100;
+}
+
+.sidebar-header {
+    padding: 40px 20px;
+    text-align: center;
+    background: transparent;
+}
+
+.user-avatar i {
+    font-size: 3.5rem;
+    margin-bottom: 15px;
+    display: inline-block; /* IMPORTANTE: Ayuda a que el degradado se aplique bien */
+    
+    /* Color de respaldo por si el navegador no soporta degradados en texto */
+    color: var(--accent-color); 
+    
+    /* El degradado */
+    background: -webkit-linear-gradient(45deg, var(--accent-color), var(--accent-secondary));
+    background: linear-gradient(45deg, var(--accent-color), var(--accent-secondary));
+    
+    /* Recortar el fondo a la forma del texto/icono */
+    -webkit-background-clip: text;
+    background-clip: text;
+    
+    /* Hacer el texto transparente para ver el fondo */
+    -webkit-text-fill-color: transparent;
+    
+    /* Sombra brillante */
+    filter: drop-shadow(0 0 10px rgba(217, 70, 239, 0.4));
+}
+
+.user-name {
+    margin: 10px 0 5px 0;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    font-size: 1.1rem;
+}
+
+/* Etiquetas de Rol Estilizadas */
+.user-role {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.role-boss { background: rgba(217, 70, 239, 0.2); color: var(--accent-color); border: 1px solid var(--accent-color); }
+.role-worker { background: rgba(16, 185, 129, 0.2); color: var(--success-green); border: 1px solid var(--success-green); }
+
+.sidebar-nav {
+    padding: 20px 15px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* Espacio entre items */
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 14px 20px;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+    border-radius: 12px; /* Bordes redondeados modernos */
+    font-weight: 500;
+    background: transparent;
+    border: none;
+    width: 100%;
+    cursor: pointer;
+}
+
+.nav-item i {
+    width: 25px;
+    margin-right: 12px;
+    font-size: 1.1rem;
+}
+
+.nav-item:hover {
+    background-color: rgba(255,255,255,0.05);
+    color: white;
+    transform: translateX(5px); /* Pequeño movimiento */
+}
+
+.nav-item.active {
+    background: linear-gradient(90deg, rgba(217, 70, 239, 0.15), transparent);
+    color: var(--accent-color);
+    border-left: 3px solid var(--accent-color);
+    border-radius: 4px 12px 12px 4px; /* Forma única */
+}
+
+.logout-link {
+    color: #ef4444; /* Rojo suave para salir */
+    margin-top: auto; 
+}
+.logout-link:hover {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ff6b6b;
+}
+
+/* === MAIN CONTENT === */
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+.top-bar {
+    background: rgba(17, 13, 22, 0.8); /* Semi transparente */
+    backdrop-filter: blur(10px);
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.brand-logo {
+    font-weight: 700;
+    color: white;
+    font-size: 1.4rem;
+    letter-spacing: -0.5px;
+}
+
+.top-actions {
+    display: flex;
+    align-items: center;
+}
+
+.top-actions i {
+    margin-left: 25px;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: color 0.3s;
+}
+
+.top-actions i:hover { color: white; }
+
+.date-display {
+    margin-left: 25px;
+    font-size: 0.85rem;
+    background: rgba(255,255,255,0.1);
+    padding: 5px 15px;
+    border-radius: 20px;
+    color: var(--text-muted);
+}
+
+.content-wrapper {
+    padding: 30px;
+}
+
+/* === ESTILOS GENERALES DE TARJETAS (Dark Mode) === */
+/* Sobreescribe los estilos blancos antiguos por oscuros */
+
+.section-container, .content-card, .stat-card, .powerbi-area, .ticket-card-styled, .action-card, .stat-card-big, .hero-widget {
+    background-color: var(--card-bg) !important;
+    border: 1px solid var(--card-border) !important;
+    color: white !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2) !important;
+    border-radius: 16px !important; /* Más redondeado = más aesthetic */
+}
+
+.section-title, h1, h2, h3, h4, strong {
+    color: white !important;
+}
+
+/* Ajustes específicos para textos dentro de tarjetas */
+p, span, small {
+    color: var(--text-muted);
+}
+p strong {
+    color: white;
+}
+
+/* Botones y Acciones */
+.btn-action, .action-card:hover {
+    background-color: var(--accent-color) !important; /* Fucsia */
+    border-color: var(--accent-color) !important;
+    color: white !important;
+    box-shadow: 0 0 15px rgba(217, 70, 239, 0.4) !important; /* Glow */
+}
+
+/* Ajuste específico para el Hero Banner que ya tenía gradiente */
+.hero-banner {
+    /* Mantenemos el diseño del dashboard.html pero ajustamos colores si es necesario */
+    background: linear-gradient(135deg, #2e1065 0%, #d946ef 100%) !important;
+    border: none !important;
+}
+
+/* Stats Cards Colores */
+.card-red {
+    background: linear-gradient(135deg, #be123c, #881337) !important; /* Rojo sangre oscuro */
+    border: none !important;
+}
+
+.card-white {
+    background: var(--card-bg) !important;
+    border: 1px solid var(--card-border) !important;
+}
+.card-white .card-number { color: white !important; }
+
+/* Grid Gap adjustments */
+.stats-grid { gap: 25px; }
+/* === ESTILOS DE FORMULARIOS DARK === */
+
+/* Contenedor del Formulario Centrado */
+.form-container-centered {
+    max-width: 600px;
+    margin: 0 auto; /* Centrar horizontalmente */
+    padding: 40px;
+}
+
+/* El header del formulario */
+.form-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+.form-header h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: white;
+    /* Un brillo blanco suave en lugar de gradiente */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+/* Grupos de inputs */
+.form-group {
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--accent-secondary); /* Color violeta suave */
+    font-weight: 500;
+    font-size: 0.9rem;
+    margin-left: 5px;
+}
+
+/* Los Inputs (Cajas de texto) */
+.custom-input input, 
+.custom-input select, 
+.custom-input textarea {
+    width: 100%;
+    padding: 12px 15px;
+    background-color: rgba(0, 0, 0, 0.3); /* Fondo oscuro semitransparente */
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-sizing: border-box; /* Para que el padding no rompa el ancho */
+}
+
+/* Efecto Focus (Cuando escribes) */
+.custom-input input:focus, 
+.custom-input select:focus, 
+.custom-input textarea:focus {
+    outline: none;
+    border-color: var(--accent-color); /* Borde Fucsia */
+    box-shadow: 0 0 10px rgba(217, 70, 239, 0.2); /* Resplandor suave */
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Botones del formulario */
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+    justify-content: flex-end; /* Alineados a la derecha */
+}
+
+.btn-cancel {
+    padding: 12px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text-muted);
+    border: 1px solid var(--card-border);
+    transition: all 0.3s;
+}
+.btn-cancel:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.btn-submit {
+    padding: 12px 30px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--accent-secondary), var(--accent-color));
+    color: white;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(217, 70, 239, 0.3);
+    transition: transform 0.2s;
+}
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(217, 70, 239, 0.5);
+}
+/* === ESTILOS ESPECÍFICOS DEL LOGIN === */
+
+/* Centra todo vertical y horizontalmente */
+.login-container-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh; /* Ocupa casi toda la altura */
+}
+
+/* La tarjeta del login (Más angosta y elegante) */
+.login-card-glass {
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    padding: 40px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 400px; /* Que no sea muy ancha */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Decoración superior (Barra de color) */
+.login-card-glass::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-secondary), var(--accent-color));
+}
+
+/* El icono circular grande */
+.login-icon-circle {
+    width: 80px;
+    height: 80px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px auto;
+    font-size: 2.5rem;
+    color: var(--accent-color);
+    box-shadow: 0 0 20px rgba(217, 70, 239, 0.2);
+}
+
+.login-header h2 {
+    color: white;
+    margin-bottom: 5px;
+    font-size: 1.8rem;
+}
+
+.login-header p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 30px;
+}
+
+/* Banner de error (Si la contraseña está mal) */
+.error-banner {
+    background: rgba(239, 68, 68, 0.15); /* Rojo transparente */
+    border: 1px solid #ef4444;
+    color: #fca5a5;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Botón ancho completo */
+.btn-full-width {
+    width: 100%;
+    margin-top: 10px;
+    padding: 15px;
+    font-size: 1rem;
+    letter-spacing: 1px;
+}
+
+/* === ESTILOS PARA VISTA MIS TICKETS === */
+
+.tickets-view-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.section-header-styled {
+    margin-bottom: 30px;
+}
+.section-header-styled h2 {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 1.8rem;
+    margin-bottom: 5px;
+}
+.icon-box {
+    background: rgba(255, 255, 255, 0.1);
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    color: var(--accent-color);
+    font-size: 1.2rem;
+}
+
+/* Grid Wrapper */
+.tickets-grid-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); /* Responsivo automático */
+    gap: 25px;
+}
+
+/* Diseño de la Tarjeta PRO */
+.ticket-card-pro {
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 25px;
+    position: relative;
+    transition: transform 0.3s, box-shadow 0.3s;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Para que todas midan lo mismo */
+}
+
+.ticket-card-pro:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    border-color: var(--accent-secondary);
+}
+
+/* Línea de color superior */
+.card-border-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-color), var(--accent-secondary));
+}
+
+.ticket-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.ticket-id {
+    background: rgba(255,255,255,0.05);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: monospace;
+}
+
+.ticket-title {
+    font-size: 1.25rem;
+    margin: 0 0 10px 0;
+    color: white;
+    font-weight: 600;
+}
+
+.ticket-desc {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    flex-grow: 1; /* Empuja el footer hacia abajo */
+    margin-bottom: 20px;
+}
+
+/* Footer de la tarjeta */
+.ticket-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding-top: 15px;
+}
+
+.status-badge {
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.status-badge.pending {
+    background: rgba(245, 158, 11, 0.15); /* Naranja transparente */
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.btn-ticket-action {
+    background-color: transparent;
+    color: var(--accent-color);
+    border: 1px solid var(--accent-color);
+    padding: 6px 15px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+}
+.btn-ticket-action:hover {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+/* === ESTADO VACÍO (Empty State) === */
+.empty-state-container {
+    grid-column: 1 / -1; /* Ocupa todo el ancho */
+    text-align: center;
+    padding: 60px 20px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 16px;
+    border: 2px dashed rgba(255,255,255,0.1);
+}
+
+.empty-icon {
+    font-size: 4rem;
+    color: var(--success-green);
+    margin-bottom: 20px;
+    opacity: 0.8;
+}
+
+.empty-state-container h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+/* === ESTILOS PARA LA TARJETA DE CONTEXTO (REPORTAR) === */
+
+.ticket-context-card {
+    background-color: rgba(255, 255, 255, 0.05); /* Fondo muy sutil */
+    border-left: 4px solid var(--accent-color); /* Línea lateral fucsia */
+    padding: 20px;
+    border-radius: 0 8px 8px 0; /* Bordes redondeados solo a la derecha */
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+.context-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--accent-secondary);
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.context-title {
+    font-size: 1.1rem;
+    color: white;
+    margin: 0 0 8px 0;
+}
+
+.context-desc {
+    font-style: italic;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Ajuste para input de tipo archivo (File Upload) */
+/* Los inputs de archivo suelen verse feos, esto ayuda un poco */
+input[type="file"] {
+    background: transparent;
+    padding: 10px 0;
+}
+input[type="file"]::file-selector-button {
+    background: var(--accent-secondary);
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    margin-right: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+input[type="file"]::file-selector-button:hover {
+    background: var(--accent-color);
+}
+/* === ESTILOS DE TABLA CYBERPUNK === */
+
+.table-responsive {
+    overflow-x: auto; /* Permite scroll horizontal en pantallas chicas */
+    width: 100%;
+}
+
+.cyber-table {
+    width: 100%;
+    border-collapse: collapse; /* Quita los espacios dobles entre bordes */
+    font-size: 0.95rem;
+}
+
+/* Encabezados de la tabla */
+.cyber-table thead th {
+    background-color: rgba(0, 0, 0, 0.3);
+    color: var(--accent-secondary);
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    padding: 18px 20px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Celdas del cuerpo */
+.cyber-table tbody td {
+    padding: 15px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: white;
+    vertical-align: middle; /* Centrar verticalmente el contenido */
+}
+
+/* Efecto Hover en las filas */
+.cyber-table tbody tr {
+    transition: background-color 0.2s;
+}
+.cyber-table tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.03); /* Brillo sutil al pasar el mouse */
+}
+
+/* Estilo para la primera columna (Título del ticket) */
+.highlight-text {
+    font-weight: 500;
+    color: var(--accent-color) !important;
+}
+
+/* Badge del usuario */
+.user-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.1);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+}
+
+/* Botón de Evidencia */
+.btn-evidence {
+    display: inline-block;
+    padding: 5px 12px;
+    border: 1px solid var(--card-border);
+    border-radius: 6px;
+    color: white;
+    text-decoration: none;
+    font-size: 0.85rem;
+    background: rgba(0,0,0,0.2);
+    transition: all 0.3s;
+}
+.btn-evidence:hover {
+    border-color: var(--success-green);
+    color: var(--success-green);
+    background: rgba(34, 197, 94, 0.1);
+}
+
+.no-evidence {
+    color: var(--text-muted);
+    opacity: 0.6;
+    font-size: 0.85rem;
+    font-style: italic;
+}

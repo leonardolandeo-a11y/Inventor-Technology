@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+
+<div class="dashboard-layout">
+    
+    <div class="dashboard-main">
+        
+        <div class="hero-banner">
+            <div class="hero-text">
+                <h1>Hola, {{ user.username|title }}</h1>
+                <p>Bienvenido al Panel de Control de <strong>TechCode Labs</strong>.</p>
+                <p style="font-size: 0.9rem; margin-top: 5px; opacity: 0.7;">Hoy es {% now "l, d \d\e F \d\e Y" %}</p>
+            </div>
+            <div class="hero-logo-container">
+                <img src="{% static 'img/LogoEmpresa.png' %}" alt="Logo" class="hero-logo">
+            </div>
+        </div>
+
+        {% if user.is_boss %}
+        <div class="content-card">
+            <h3 style="margin-top:0; color:#2c3e50; margin-bottom: 20px;"><i class="fas fa-rocket"></i> Acciones Rápidas</h3>
+            <div class="actions-grid">
+                <a href="{% url 'create_ticket' %}" class="action-card">
+                    <i class="fas fa-plus-circle" style="color: #e74c3c;"></i>
+                    <span>Crear Ticket</span>
+                </a>
+                <a href="{% url 'view_reports' %}" class="action-card">
+                    <i class="fas fa-file-alt" style="color: #f39c12;"></i>
+                    <span>Ver Reportes</span>
+                </a>
+                <a href="{% url 'register_new_worker' %}" class="action-card">
+                    <i class="fas fa-user-plus" style="color: #27ae60;"></i>
+                    <span>Registrar Trabajador</span>
+                </a>
+                <a href="{% url 'workers' %}" class="action-card">
+                    <i class="fas fa-hard-hat" style="color: #7f8c8d;"></i>
+                    <span>Trabajadores</span>
+                </a>
+                <a href="#" class="action-card">
+                    <i class="fas fa-cog" style="color: #7f8c8d;"></i>
+                    <span>Configuración</span>
+                </a>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if user.is_worker %}
+        <div class="content-card">
+            <h3 style="margin-top:0; color:#2c3e50; border-bottom: 2px solid #f4f4f4; padding-bottom:15px; margin-bottom: 20px;">
+                <i class="fas fa-tasks"></i> Mis Tickets Pendientes
+            </h3>
+            
+            <div class="tickets-grid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:20px;">
+                {% if tickets %}
+                    {% for ticket in tickets %}
+                        <div class="ticket-card-styled" style="border:1px solid #eee; border-left: 4px solid #3498db; padding:15px; border-radius:6px;">
+                            <div class="ticket-info">
+                                <p style="font-size:1.1rem; color:#2c3e50; margin:0 0 10px 0;"><strong>{{ ticket.title }}</strong></p>
+                                <p style="color:#777; font-size:0.9rem;"><i class="far fa-clock"></i> Entrega: {{ ticket.due_date|date:"d/m/Y" }}</small></p>
+                            </div>
+                            <div style="margin-top:15px; padding-top:10px; border-top:1px dashed #eee;">
+                                {% with report=ticket_reports|get_item:ticket.id %}
+                                    {% if report %}
+                                        <span class="status-done" style="color:green; font-weight:bold; font-size:0.9rem;">
+                                            <i class="fas fa-check"></i> Completado
+                                        </span>
+                                    {% else %}
+                                        <a href="{% url 'send_report' ticket.id %}" class="btn-report" style="background:#3498db; color:white; padding:5px 15px; border-radius:4px; text-decoration:none; font-size:0.9rem; display:block; text-align:center;">
+                                            Reportar
+                                        </a>
+                                    {% endif %}
+                                {% endwith %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div style="grid-column: 1 / -1; text-align:center; padding: 40px; color:#999;">
+                        <i class="fas fa-check-circle" style="font-size: 3rem; margin-bottom:15px; color:#ddd;"></i>
+                        <p>¡Todo limpio! No tienes tareas pendientes.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    {% if user.is_boss %}
+
+    <div class="dashboard-sidebar-right">
+        <div class="stats-grid-sidebar">
+            <div class="stat-card-big card-red">
+                <i class="fas fa-folder-open card-icon"></i>
+                <span class="card-number">{{ workers|default:"0" }}</span>
+                <p class="card-subtext">N° Trabajadores</p>
+            </div>
+            <div class="stat-card-big card-red">
+                <i class="fas fa-folder card-icon"></i>
+                <span class="card-number">{{ tickets|default:"0" }}</span>
+                <p class="card-subtext">Tareas pendientes</p>
+            </div>
+        </div>
+        
+        
+        
+        <div class="stat-card-big card-white" style="height: auto; min-height: 100px; padding: 20px; align-items: flex-start; text-align: left;">
+            <h4 style="margin:0 0 10px 0; color:#555;">Estado del Sistema</h4>
+            <div style="display:flex; align-items:center; gap:10px; font-size:0.9rem; color:#27ae60;">
+                <div style="width:10px; height:10px; background:#27ae60; border-radius:50%;"></div>
+                Servidor Operativo
+            </div>
+            <p style="margin:5px 0 0 0; font-size:0.8rem; color:#999;">Última actualización: {% now "H:i" %}</p>
+        </div>
+    </div>
+
+    {% endif %}
+
+    {% if user.is_worker %}
+    <div class="dashboard-sidebar-right">
+        
+        
+        <div class="stats-grid-sidebar">
+            <div class="stat-card-big card-white">
+                <i class="fas fa-calendar-week card-icon" style="color:#e67e22;"></i>
+                <span class="card-number" style="color:#333;">{{ tickets_week|default:"0" }}</span>
+                <p class="card-subtext" style="color:#777;">Esta Semana</p>
+            </div>
+            <div class="stat-card-big card-white">
+                <i class="fas fa-calendar-alt card-icon" style="color:#2980b9;"></i>
+                <span class="card-number" style="color:#333;">{{ tickets_month|default:"0" }}</span>
+                <p class="card-subtext" style="color:#777;">Este Mes</p>
+            </div>
+        </div>
+        
+        <div class="stat-card-big card-white" style="height: auto; min-height: 100px; padding: 20px; align-items: flex-start; text-align: left;">
+            <h4 style="margin:0 0 10px 0; color:#555;">Estado del Sistema</h4>
+            <div style="display:flex; align-items:center; gap:10px; font-size:0.9rem; color:#27ae60;">
+                <div style="width:10px; height:10px; background:#27ae60; border-radius:50%;"></div>
+                Servidor Operativo
+            </div>
+            <p style="margin:5px 0 0 0; font-size:0.8rem; color:#999;">Última actualización: {% now "H:i" %}</p>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

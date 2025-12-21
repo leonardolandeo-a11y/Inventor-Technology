@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}TechCode Labs{% endblock %}</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="shortcut icon" type="logo" href="{% static 'img/LogoEmpresa.png' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user-astronaut"></i> 
+                </div>
+                <h4 class="user-name">{{ user.username|default:"Usuario"|title|truncatechars:15 }}</h4>
+                {% if user.is_boss %}
+                <span class="user-role role-boss">BOSS</span>
+                {% endif %}
+                {% if user.is_worker %}
+                <span class="user-role role-worker">WORKER</span>
+                {% endif %}
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="{% url 'dashboard' %}" class="nav-item active"><i class="fas fa-grid-2"></i> Dashboard</a>
+                
+                {% if user.is_worker %}
+                <a href="{% url 'my_tickets' %}" class="nav-item"><i class="fas fa-ticket-alt"></i> Mis Tickets</a>
+                {% endif %}
+                
+                {% if user.is_boss %}
+                <a href="{% url 'view_reports' %}" class="nav-item"><i class="fas fa-chart-pie"></i> Reportes</a>
+                {% endif %}
+                
+                
+                <form method="post" action="{% url 'Hello' %}" class="logout-form-sidebar">
+                    {% csrf_token %}
+                    <button type="submit" class="nav-item logout-link">
+                        <i class="fas fa-power-off">Cerrar Sesión</i> 
+                    </button>
+                </form>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="brand-logo">TECHCODE <span style="color:var(--accent-color)">LABS</span></div>
+                <div class="top-actions">
+                    <i class="fas fa-bell"></i>
+                    <i class="fas fa-envelope"></i>
+                    <span class="date-display">{% now "d M" %}</span>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Nuevo Ingreso | TechCode{% endblock %}
+
+{% block content %}
+<div class="login-container-wrapper">
+    
+    <div class="login-card-glass" style="max-width: 500px;"> <div class="login-header">
+            <div class="login-icon-circle">
+                <i class="fas fa-user-plus"></i>
+            </div>
+            <h2>Crear Cuenta</h2>
+            <p>Registro de nuevo personal en el sistema.</p>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+
+            {% for field in form %}
+                <div class="form-group custom-input">
+                    <label class="form-label" for="{{ field.id_for_label }}">
+                        {% if 'email' in field.name %}
+                            <i class="fas fa-envelope"></i>
+                        {% elif 'password' in field.name %}
+                            <i class="fas fa-lock"></i>
+                        {% elif 'first_name' in field.name or 'last_name' in field.name %}
+                            <i class="fas fa-id-card"></i>
+                        {% else %}
+                            <i class="fas fa-user"></i>
+                        {% endif %}
+                        {{ field.label }}
+                    </label>
+
+                    {{ field }}
+
+                    {% if field.errors %}
+                        <div class="field-error" style="color: #fca5a5; font-size: 0.85rem; margin-top: 5px; text-align: left;">
+                            <i class="fas fa-times-circle"></i> {{ field.errors|striptags }}
+                        </div>
+                    {% endif %}
+
+                    {% if field.help_text %}
+                        <small style="display: block; color: var(--text-muted); text-align: left; font-size: 0.75rem; margin-top: 4px; opacity: 0.8;">
+                            {{ field.help_text|safe }}
+                        </small>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="btn-submit btn-full-width">
+                REGISTRAR TRABAJADOR <i class="fas fa-check"></i>
+            </button>
+            
+        </form>
+
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Enviar Reporte | TechCode{% endblock %}
+
+{% block content %}
+<div class="form-container-centered">
+
+    <div class="section-container" style="padding: 40px;">
+        
+        <div class="form-header">
+            <h2><i class="fas fa-clipboard-check" style="color:var(--success-green)"></i> Finalizar Tarea</h2>
+            <p style="color:var(--text-muted)">Adjunta evidencias y cierra el ticket #{{ ticket.id }}.</p>
+        </div>
+
+        <div class="ticket-context-card">
+            <div class="context-label">Estás atendiendo:</div>
+            <h3 class="context-title">{{ ticket.title }}</h3>
+            <p class="context-desc">"{{ ticket.description }}"</p>
+        </div>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {% for field in form %}
+                <div class="form-group custom-input">
+                    <label class="form-label" for="{{ field.id_for_label }}">
+                        {% if 'image' in field.name or 'imagen' in field.name %}
+                            <i class="fas fa-camera"></i>
+                        {% elif 'observacion' in field.name or 'mensaje' in field.name %}
+                            <i class="fas fa-comment-alt"></i>
+                        {% else %}
+                            <i class="fas fa-pen"></i>
+                        {% endif %}
+                        {{ field.label }}
+                    </label>
+                    
+                    {{ field }}
+                    
+                    {% if field.errors %}
+                        <div style="color: #ef4444; font-size: 0.85rem; margin-top: 5px;">
+                            <i class="fas fa-exclamation-circle"></i> {{ field.errors|striptags }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <div class="form-actions">
+                <a href="{% url 'dashboard' %}" class="btn-cancel">Cancelar</a>
+                
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-paper-plane"></i> Enviar Informe
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

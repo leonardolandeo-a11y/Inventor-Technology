@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Bienvenido | TechCode Labs{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/welcome.css' %}">
+
+<div class="welcome-wrapper">
+    <div class="tech-card">
+        <img src="{% static 'img/Logo.png' %}" alt="TechCode Logo" class="hero-logo">
+        
+        <h1 class="brand-title">
+            TechCode <span class="brand-accent">Labs</span>
+        </h1>
+        
+        <p class="subtitle">
+            Identifiquese para acceder a la plataforma.
+        </p>
+        
+        <a href="{% url 'login' %}" class="btn-tech">
+            Iniciar sesión
+        </a>
+    </div>
+</div>
+
+{% endblock %}

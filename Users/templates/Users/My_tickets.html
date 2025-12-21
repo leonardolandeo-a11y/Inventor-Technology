@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+
+{% load static %}
+
+{% block title %}Mis Tareas | TechCode{% endblock %}
+
+{% block content %}
+<div class="tickets-view-container">
+
+    <div class="section-header-styled">
+        <h2>
+            <span class="icon-box"><i class="fas fa-ticket-alt"></i></span> 
+            Mis Tickets Asignados
+        </h2>
+        <p>Revisa y gestiona las tareas pendientes de solución.</p>
+    </div>
+
+    <div class="tickets-grid-wrapper">
+        {% for ticket in tickets %}
+            <div class="ticket-card-pro">
+                <div class="card-border-top"></div>
+                
+                <div class="ticket-header">
+                    <span class="ticket-id">#{{ ticket.id }}</span>
+                    <span class="ticket-date">
+                        <i class="far fa-clock"></i> {{ ticket.creation_date|date:"d M"|default:"Pendiente" }}
+                    </span>
+                </div>
+
+                <h3 class="ticket-title">{{ ticket.title }}</h3>
+                
+                <p class="ticket-desc">
+                    {{ ticket.description|truncatechars:100 }}
+                </p>
+                <div class="ticket-footer">
+                    <span class="status-badge pending">
+                        <i class="fas fa-spinner"></i> Trabajo
+                    </span>
+                    
+                    {% with report=ticket_reports|get_item:ticket.id %}
+                        {% if report %}
+                            <span class="status-done" style="color:green; font-weight:bold; font-size:0.9rem;">
+                                <i class="fas fa-check"></i> Completado
+                            </span>
+                        {% else %}
+                            <a href="{% url 'send_report' ticket.id %}" class="btn-ticket-action">
+                                Reportar<i class="fas fa-arrow-right"></i>
+                            </a>
+                        {% endif %}
+                    {% endwith %}
+                </div>
+            </div>
+        
+        {% empty %}
+            <div class="empty-state-container">
+                <div class="empty-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>¡Todo limpio!</h3>
+                <p>No tienes tickets asignados por el momento. ¡Buen trabajo!</p>
+            </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

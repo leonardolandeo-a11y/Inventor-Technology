@@ -2,7 +2,9 @@ from django.shortcuts import render,redirect
 from .forms import RegisterUserForm,TicketForm,ReportForm
 from django.contrib.auth.decorators import login_required,user_passes_test
 from .models import Ticket,Report,CustomUser
-import datetime
+from datetime import datetime as dt
+import datetime 
+import calendar
 # Create your views here.
 def Hello(request):
     return render(request,"Users/Welcome.html")
@@ -122,4 +124,24 @@ def dashboard(request):
     return render(request,"Users/Dashboard.html",context)
 
 
+# More
+
+@login_required
+def calendar_dashboard(request):
+    now = dt.now()
+    year = now.year
+    month = now.month
+    
+    cal = calendar.Calendar(firstweekday=0)
+    month_days = cal.monthdatescalendar(year,month)
+    
+    week = ["Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo"]
+    
+    context ={
+        "year":year,
+        "month": month,
+        "month_days" : month_days,
+        "week": week,
+    }
+    return render(request,"Users/Calendar.html",context)
 

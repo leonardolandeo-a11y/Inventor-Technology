@@ -12,11 +12,11 @@
         <div class="hero-banner">
             <div class="hero-text">
                 <h1>Hola, {{ user.username|title }}</h1>
-                <p>Bienvenido al Panel de Control de <strong>TechCode Labs</strong>.</p>
+                <p>Bienvenido al Panel de Control de <strong>INVENTOR TECHNOLOGY</strong>.</p>
                 <p style="font-size: 0.9rem; margin-top: 5px; opacity: 0.7;">Hoy es {% now "l, d \d\e F \d\e Y" %}</p>
             </div>
             <div class="hero-logo-container">
-                <img src="{% static 'img/LogoEmpresa.png' %}" alt="Logo" class="hero-logo">
+                <img src="{% static 'img/LogoEmpresa.jpeg' %}" alt="Logo" class="hero-logo">
             </div>
         </div>
 
@@ -39,6 +39,10 @@
                 <a href="{% url 'workers' %}" class="action-card">
                     <i class="fas fa-hard-hat" style="color: #7f8c8d;"></i>
                     <span>Trabajadores</span>
+                </a>
+                <a href="{% url 'calendar' %}" class="action-card">
+                    <i class="fas fa-calendar-alt" style="color: #7f8c8d;"></i>
+                    <span>Calendario</span>
                 </a>
                 <a href="#" class="action-card">
                     <i class="fas fa-cog" style="color: #7f8c8d;"></i>

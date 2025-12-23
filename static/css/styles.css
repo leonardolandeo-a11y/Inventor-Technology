@@ -734,3 +734,159 @@ input[type="file"]::file-selector-button:hover {
     font-size: 0.85rem;
     font-style: italic;
 }
+/* styles.css */
+
+.calendar-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    font-family: Arial, sans-serif;
+}
+
+.calendar-grid {
+    display: grid;
+    /* 7 columnas de igual tamaño */
+    grid-template-columns: repeat(7, 1fr); 
+    border-top: 1px solid #e0e0e0;
+    border-left: 1px solid #e0e0e0;
+}
+
+/* Cabeceras (LUN, MAR...) */
+.day-header {
+    text-align: center;
+    font-weight: bold;
+    padding: 15px 0;
+    color: #555;
+    background-color: #fff;
+    border-right: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+}
+/* styles.css - Tema Dark Tech para TECHCODE LABS */
+
+:root {
+    /* --- Paleta de Colores basada en tu imagen --- */
+    --bg-main-dark: #0d0018;      /* Color de fondo principal (muy oscuro) */
+    --bg-cell: #1a0b2e;           /* Color de las celdas (morado oscuro) */
+    --bg-cell-hover: #2a1245;     /* Color al pasar el mouse */
+    --bg-cell-empty: #07000a;     /* Color para días fuera del mes (casi negro) */
+    
+    --text-primary: #ffffff;      /* Texto principal (blanco) */
+    --text-secondary: #a0a0a0;    /* Texto secundario (gris claro) */
+    
+    --accent-pink: #ff00cc;       /* El rosa neón de "LABS" */
+    
+    --border-subtle: rgba(255, 255, 255, 0.1); /* Bordes muy sutiles */
+    --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.5); /* Sombra para profundidad */
+}
+
+body {
+    /* Aseguramos que el fondo base coincida si la imagen no carga */
+    background-color: var(--bg-main-dark);
+    color: var(--text-primary);
+    /* Usamos una fuente sans-serif moderna */
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+}
+
+/* --- Contenedor Principal --- */
+.calendar-container {
+    max-width: 1100px;
+    margin: 50px auto;
+    padding: 20px;
+    /* Fondo transparente para que se vea tu imagen de fondo */
+    background: transparent; 
+}
+
+/* Título del calendario */
+.calendar-container h2 {
+    text-align: left;
+    font-weight: 300;
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    letter-spacing: 1px;
+    color: var(--text-primary);
+}
+/* PEQUEÑO TRUCO: Si en tu HTML pones el mes en un <span> (ej: Calendario: <span class="pink-text">{{ month }}</span> / {{ year }}) */
+.pink-text {
+    color: var(--accent-pink);
+    font-weight: 500;
+}
+
+
+/* --- La Cuadrícula --- */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    
+    /* Bordes y forma */
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px; /* Esquinas redondeadas */
+    overflow: hidden; /* Necesario para que el border-radius funcione en las esquinas */
+    
+    /* Sombra para darle profundidad sobre el fondo oscuro */
+    box-shadow: var(--shadow-soft);
+    backdrop-filter: blur(5px); /* Efecto de cristal opcional (moderno) */
+}
+
+/* --- Cabeceras (LUN, MAR...) --- */
+.day-header {
+    text-align: center;
+    padding: 18px 0;
+    
+    /* Estilo Tech */
+    color: var(--accent-pink); /* Texto en rosa neón */
+    background-color: rgba(26, 11, 46, 0.8); /* Morado semitransparente */
+    
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1.5px;
+    
+    /* Bordes internos sutiles */
+    border-right: 1px solid var(--border-subtle);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+/* --- Celdas de los días --- */
+.day-cell {
+    min-height: 130px; /* Altura cuadrada */
+    padding: 15px;
+    position: relative;
+    
+    background-color: var(--bg-cell);
+    
+    /* Bordes internos sutiles */
+    border-right: 1px solid var(--border-subtle);
+    border-bottom: 1px solid var(--border-subtle);
+    
+    /* Transición suave para el hover */
+    transition: all 0.3s ease;
+}
+
+/* Número del día */
+.day-number {
+    display: block;
+    text-align: right;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--text-primary);
+    opacity: 0.9;
+}
+
+/* --- Estados de las Celdas --- */
+
+/* Días que NO son de este mes (los ceros) */
+.day-cell.empty {
+    /* Los hacemos más oscuros para que "desaparezcan" en el fondo */
+    background-color: var(--bg-cell-empty);
+    border-color: transparent; /* Quitamos bordes internos para que se vean planos */
+}
+
+/* Efecto Hover (Al pasar el mouse) */
+.day-cell:not(.empty):hover {
+    background-color: var(--bg-cell-hover); /* Se ilumina un poco */
+    cursor: pointer;
+    /* Opcional: un resplandor rosa sutil en el borde interno */
+    box-shadow: inset 0 0 0 1px var(--accent-pink); 
+    transform: translateY(-2px); /* Pequeño efecto de elevación */
+}
